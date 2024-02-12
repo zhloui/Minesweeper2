@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function()  {
+    //define some constants
     const grid = document.querySelector('.grid');
     const flagsLeft = document.querySelector('#flags-left');
     const result = document.querySelector('#result');
     const width = 10;
-    let bombAmount = 20;
+    let bombAmount = 15;
     let squares = [];
     let isGameOver = false;
     let flags = 0;
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function()  {
         const gameArray = emptyArray.concat(bombsArray);
         const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
 
+        //push div,id,class to the empty squares array
         for (let i = 0; i < width * width; i++) {
             const square = document.createElement('div');
             square.id = i;
@@ -25,17 +27,18 @@ document.addEventListener('DOMContentLoaded', function()  {
             grid.appendChild(square);
             squares.push(square);
 
-            //normal left click
+            //normal left click to uncover a square
             square.addEventListener('click', function() {
                 click(square);
             });
 
-            //right click to add flag
+            //right click to add flag to a square
             square.addEventListener('contextmenu', function() {
                 addFlag(square);
             });
         }
-        //add numbers
+        
+        //check the adjacent square if it is a bomb and showing the bombs' number
         for (let i = 0; i < squares.length; i++) {
             let total = 0;
             const isLeftEdge    = (i % width === 0);
@@ -64,10 +67,12 @@ document.addEventListener('DOMContentLoaded', function()  {
     }
     createBoard();
 
-    //add Flag with right click
+    //function for adding/removing Flag
     function addFlag(square) {
         if (isGameOver) return;
         if (!square.classList.contains('checked') && (flags < bombAmount)) {
+            //if the square does not have a flag, add a flag, 
+            //if it does, remove the flag
             if (!square.classList.contains('flag')) {
                 square.classList.add('flag');
                 flags++;
@@ -82,11 +87,10 @@ document.addEventListener('DOMContentLoaded', function()  {
             }
         }
     }
-
+    //after a click on a square, exit the function if the game is over,
     function click(square) {
-        console.log(square);
         if (isGameOver || square.classList.contains('checked') || square.classList.contains('flag')) return;
-
+        //or showing a number for bombs around the square
         if (square.classList.contains('bomb')) {
             gameOver();
         } else {
@@ -160,16 +164,17 @@ document.addEventListener('DOMContentLoaded', function()  {
                 click(newSquare);
             }
             
-        }, 10)
+        }, 100)
     }
 
     function checkForWin() {
         let matches = 0;
-
+        //check if the flags is on the bombs, if so, match plus one
         for (let i = 0; i < squares.length; i++) {
             if (squares[i].classList.contains('flag') && squares[i].classList.contains('bomb')) {
                 matches++;
             }
+            //if the matches number is equal to the bomb amount, the player wins
             if (matches === bombAmount) {
                 result.innerHTML = 'YOU WIN!';
                 isGameOver = true;
@@ -177,12 +182,11 @@ document.addEventListener('DOMContentLoaded', function()  {
         }
     }
 
-
+    //when game is over, invoke the gameover function
     function gameOver() {
         result.innerHTML = 'BOOM! Game Over!';
         isGameOver = true;
-
-        //show ALL the bombs
+        //show all the bombs on the board
         squares.forEach(square => {
             if (square.classList.contains('bomb')) {
                 square.innerHTML = '💣';

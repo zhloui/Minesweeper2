@@ -12,12 +12,13 @@
     margin-top: 20px;
     border: 5px solid #cccccd;
     margin-bottom: 10px;
+
 }
 
 div {
-    font-size: 25px;
+    font-size: 18px;
     text-align: center;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Press Start 2P', system-ui;
 }
 
 .valid, .bomb {
@@ -26,6 +27,9 @@ div {
     border: 2px solid;
     border-color: #ebf5f2 #baa9ad #baa9ad #ebf5f2;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .checked {
