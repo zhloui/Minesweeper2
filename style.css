@@ -1,0 +1,60 @@
+.container {
+    width: 500px;
+}
+
+.grid {
+    height: 400px;
+    width: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #e1dee6;
+    margin-left: 50px;
+    margin-top: 20px;
+    border: 5px solid #cccccd;
+    margin-bottom: 10px;
+}
+
+div {
+    font-size: 25px;
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.valid, .bomb {
+    width: 40px;
+    height: 40px;
+    border: 2px solid;
+    border-color: #ebf5f2 #baa9ad #baa9ad #ebf5f2;
+    box-sizing: border-box;
+}
+
+.checked {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #9c998d;
+    box-sizing: border-box;
+}
+
+.one {
+    color: #e76346;
+}
+
+.two {
+    color: #4199d3;
+}
+
+.three {
+    color: #57da59;
+}
+
+.four {
+    color: #bb41d3;
+}
+
+
+
+
+
+
+
+
