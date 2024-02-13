@@ -7,12 +7,11 @@
     width: 400px;
     display: flex;
     flex-wrap: wrap;
-    background-color: #e1dee6;
+    background-color: #a5eb7c;
     margin-left: 50px;
     margin-top: 20px;
-    border: 5px solid #cccccd;
+    border: 2px solid #ebf5f2;
     margin-bottom: 10px;
-
 }
 
 div {
@@ -21,11 +20,16 @@ div {
     font-family: 'Press Start 2P', system-ui;
 }
 
+.grid > div:not(.checked):hover {
+    background-color: rgba(242, 246, 241, 0.8);
+    cursor: pointer;
+}
+
 .valid, .bomb {
     width: 40px;
     height: 40px;
     border: 2px solid;
-    border-color: #ebf5f2 #baa9ad #baa9ad #ebf5f2;
+    border-color:  #ebf5f2 #baa9ad #baa9ad #ebf5f2;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -35,25 +39,112 @@ div {
 .checked {
     width: 40px;
     height: 40px;
-    border: 2px solid #9c998d;
+    background-color: #c0bfb8;
+    /* border: 2px solid #ebf5f2;  */
     box-sizing: border-box;
 }
 
 .one {
-    color: #e76346;
+    color: #3277d2;
 }
 
 .two {
-    color: #4199d3;
+    color: #388e3c;
 }
 
 .three {
-    color: #57da59;
+    color: #d6433e;
 }
 
 .four {
-    color: #bb41d3;
+    color: rgb(113, 38, 156);
 }
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.fall-out {
+    animation: fall 0.5s ease-in-out;
+}
+
+.modal {
+    position: fixed;
+    top: 75%;
+    left: 24%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    /* padding: 10px; */
+    text-align: center;
+}
+
+.modal-content {
+    margin-bottom: 20px;
+}
+
+#try-again-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#try-again-btn:hover {
+    background-color: #45a049;
+}
+
+@keyframes celebration {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .win-celebration {
+    animation: celebration 1s ease-in-out;
+  }
+
+
+
+  #youWinImage {
+    position: absolute;
+    top: 15%; 
+    left: 15%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 2;
+    width: 200px; 
+    height: auto;
+    animation: shake 3s ease-in-out; 
+    display: none; 
+    border-radius: 5%;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+
 
 
 

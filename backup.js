@@ -4,10 +4,17 @@ document.addEventListener('DOMContentLoaded', function()  {
     const flagsLeft = document.querySelector('#flags-left');
     const result = document.querySelector('#result');
     const width = 10;
-    let bombAmount = 15;
+    let bombAmount = 5;
     let squares = [];
     let isGameOver = false;
     let flags = 0;
+    const leftClickSound = new Audio(src = './Audio/left-click1.mp3');
+    const rightClickSound = new Audio(src = './Audio/right-click2.wav');
+    const removeFlagSound = new Audio(src = './Audio/remove-flag.mp3');
+    const floodingSound = new Audio(src = './Audio/flood2.mp3');
+    const gameOverSound = new Audio(src = './Audio/gameover.mp3');
+    const winSound = new Audio(src = './Audio/win.mp3');
+
     
     //create board
     function createBoard() {
@@ -33,7 +40,9 @@ document.addEventListener('DOMContentLoaded', function()  {
             });
 
             //listen to a event, right click to invoke the function to add flag to a square
-            square.addEventListener('contextmenu', function() {
+            square.addEventListener('contextmenu', function(event) {
+                // Prevent menu to show when right-click
+                event.preventDefault();
                 addFlag(square);
             });
         }
@@ -71,26 +80,30 @@ document.addEventListener('DOMContentLoaded', function()  {
     //function for adding/removing Flag
     function addFlag(square) {
         if (isGameOver) return;
-        if (!square.classList.contains('checked') && (flags < bombAmount)) {
+        if (!square.classList.contains('checked') ) {
             //if the square does not have a flag, add a flag, 
-            if (!square.classList.contains('flag')) {
+            if (!square.classList.contains('flag') && (flags < bombAmount) ) {
                 square.classList.add('flag');
                 flags++;
                 square.innerHTML = '🚩';
                 flagsLeft.innerHTML = bombAmount - flags;
                 checkForWin();
-            } else {
+                rightClickSound.play();
+            } else if (square.classList.contains('flag') && (flags <= bombAmount)) {
                 //if it does have a flag, remove the flag
                 square.classList.remove('flag');
                 flags--;
                 square.innerHTML = '';
                 flagsLeft.innerHTML = bombAmount - flags;
-            }
-        }
+                removeFlagSound.play();
+            };
+            
+        };
     }
+
     //function for clicking on a square
     function click(square) {
-        //exit the function if having the status of game over and class checked and class flag
+            //exit the function if having the status of game over and class checked and class flag
         if (isGameOver || square.classList.contains('checked') || square.classList.contains('flag')) return;
             //when square clicking is a bomb, invoke the gameover function
         if (square.classList.contains('bomb')) {
@@ -99,17 +112,26 @@ document.addEventListener('DOMContentLoaded', function()  {
             //or if it's not bomb, render the bombs' number on the square
             let total = square.getAttribute('data');
             if (total != 0) {
-                if (total == 1) square.classList.add('one');
-                if (total == 2) square.classList.add('two');
-                if (total == 3) square.classList.add('three');
-                if (total == 4) square.classList.add('four');
+                if (total == 1) square.classList.add('one')
+                leftClickSound.play();
+                if (total == 2) square.classList.add('two')
+                leftClickSound.play();
+                if (total == 3) square.classList.add('three')
+                leftClickSound.play();
+                if (total == 4) square.classList.add('four')
+                leftClickSound.play();
                 square.innerHTML = total;
                 return;
             }
             checkSquare(square);
+            // Play flooding sound
+            floodingSound.play();
         }
         //checked the sqaure after a clickcing
         square.classList.add('checked');
+        // Add the fall-out class for the falling tile effect
+        square.classList.add('fall-out');
+        
     }
 
     //flooding feature: check and auto-click neighboring squares, 
@@ -118,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function()  {
         const currentId = square.id;
         const isLeftEdge = (square.id % width === 0);
         const isRightEdge = (square.id % width === width - 1);
-        //set a timeout and check the adjacent squares
+        //set a timeout and check the adjacent squares to auto-click
         setTimeout(function(){
             //check the top square
             if (currentId > 9) {
@@ -183,6 +205,7 @@ document.addEventListener('DOMContentLoaded', function()  {
             if (matches === bombAmount) {
                 result.innerHTML = 'YOU WIN!';
                 isGameOver = true;
+                winSound.play();
             }
         }
     }
@@ -199,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function()  {
                 square.classList.add('checked');
             }
         });
+        gameOverSound.play();
     }
 
 
