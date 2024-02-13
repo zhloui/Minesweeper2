@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', function()  {
     function createBoard() {
         flagsLeft.innerHTML = bombAmount;
         
-        //get shuffled game array with random bombs
+        // shuffle the game array with random bombs
         const bombsArray = Array(bombAmount).fill('bomb');
         const emptyArray = Array(width * width - bombAmount).fill('valid');
         const gameArray = emptyArray.concat(bombsArray);
         const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
 
-        //push div,id,class to the empty squares array
+        //create div and add id,class to the empty squares array
         for (let i = 0; i < width * width; i++) {
             const square = document.createElement('div');
             square.id = i;
@@ -27,13 +27,15 @@ document.addEventListener('DOMContentLoaded', function()  {
             grid.appendChild(square);
             squares.push(square);
 
-            //normal left click to uncover a square
+            //listen to a event, left click to invoke the function to uncover a square
             square.addEventListener('click', function() {
                 click(square);
             });
 
-            //right click to add flag to a square
+            //listen to a event, right click to invoke the function to add flag to a square
             square.addEventListener('contextmenu', function() {
+                // Prevent the default context menu to come out when I right-click
+                preventDefault();
                 addFlag(square);
             });
         }
@@ -41,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function()  {
         //check the adjacent square if it is a bomb and showing the bombs' number
         for (let i = 0; i < squares.length; i++) {
             let total = 0;
+            //use a formular to check if the square is on the left/right edge
             const isLeftEdge    = (i % width === 0);
             const isRightEdge   = (i % width === width - 1);
             //check the adjacent square if it is a bomb
@@ -72,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function()  {
         if (isGameOver) return;
         if (!square.classList.contains('checked') && (flags < bombAmount)) {
             //if the square does not have a flag, add a flag, 
-            //if it does, remove the flag
             if (!square.classList.contains('flag')) {
                 square.classList.add('flag');
                 flags++;
@@ -80,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function()  {
                 flagsLeft.innerHTML = bombAmount - flags;
                 checkForWin();
             } else {
+                //if it does have a flag, remove the flag
                 square.classList.remove('flag');
                 flags--;
                 square.innerHTML = '';
@@ -87,13 +90,15 @@ document.addEventListener('DOMContentLoaded', function()  {
             }
         }
     }
-    //after a click on a square, exit the function if the game is over,
+    //function for clicking on a square
     function click(square) {
+        //exit the function if having the status of game over and class checked and class flag
         if (isGameOver || square.classList.contains('checked') || square.classList.contains('flag')) return;
-        //or showing a number for bombs around the square
+            //when square clicking is a bomb, invoke the gameover function
         if (square.classList.contains('bomb')) {
             gameOver();
         } else {
+            //or if it's not bomb, render the bombs' number on the square
             let total = square.getAttribute('data');
             if (total != 0) {
                 if (total == 1) square.classList.add('one');
@@ -105,15 +110,17 @@ document.addEventListener('DOMContentLoaded', function()  {
             }
             checkSquare(square);
         }
+        //checked the sqaure after a clickcing
         square.classList.add('checked');
     }
 
-    //check neighboring squares once square is clicked
+    //flooding feature: check and auto-click neighboring squares, 
+    //it goes on until it reaches a square with a bomb number,
     function checkSquare(square) {
         const currentId = square.id;
         const isLeftEdge = (square.id % width === 0);
         const isRightEdge = (square.id % width === width - 1);
-
+        //set a timeout and check the adjacent squares
         setTimeout(function(){
             //check the top square
             if (currentId > 9) {
@@ -164,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function()  {
                 click(newSquare);
             }
             
-        }, 100)
+        }, 200)
     }
 
     function checkForWin() {
@@ -182,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function()  {
         }
     }
 
-    //when game is over, invoke the gameover function
+    //when a bomb is clicked, invoke the gameover function
     function gameOver() {
         result.innerHTML = 'BOOM! Game Over!';
         isGameOver = true;
