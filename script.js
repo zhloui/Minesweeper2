@@ -4,16 +4,16 @@ document.addEventListener('DOMContentLoaded', function()  {
     const flagsLeft = document.querySelector('#flags-left');
     const result = document.querySelector('#result');
     const width = 10;
-    let bombAmount = 8;
-    let squares = [];
-    let isGameOver = false;
-    let flags = 0;
     const leftClickSound = new Audio(src = './Audio/left-click1.mp3');
     const rightClickSound = new Audio(src = './Audio/right-click2.wav');
     const removeFlagSound = new Audio(src = './Audio/remove-flag.mp3');
     const floodingSound = new Audio(src = './Audio/flood3.mp3');
     const gameOverSound = new Audio(src = './Audio/gameover.mp3');
     const winningSound = new Audio(src = './Audio/win.mp3');
+    let squares = [];
+    let isGameOver = false;
+    let flags = 0;
+    let bombAmount = 6;
 
     
     //create board
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function()  {
             //use a formular to check if the square is on the left/right edge
             const isLeftEdge    = (i % width === 0);
             const isRightEdge   = (i % width === width - 1);
-            //check the adjacent square if it is a bomb
+            //check the adjacent square that has a bomb, if true the total plus one
             if (squares[i].classList.contains('valid')) {
                 //check the top square
                 if (i > 9 &&                    squares[i - width].     classList.contains('bomb')) total++;
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function()  {
                 if (i > 0 &&    !isLeftEdge &&  squares[i - 1].         classList.contains('bomb')) total++;
                 //check the top-left square
                 if (i > 10 &&   !isLeftEdge &&  squares[i - 1 - width]. classList.contains('bomb')) total++;
-                
+                //sum the total number of bombs around the square
                 squares[i].setAttribute('data', total);
             }
         }
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function()  {
         };
     }
 
-    //function for clicking on a square
+    //function for left-clicking on a square
     function click(square) {
         //exit the function if having the status of game over and class checked and class flag
         if (isGameOver || square.classList.contains('checked') || square.classList.contains('flag')) return;
@@ -127,14 +127,10 @@ document.addEventListener('DOMContentLoaded', function()  {
                 return;
             }
             checkSquare(square);
-            // Play flooding sound
             floodingSound.play();
         }
         //checked the sqaure after a clickcing
         square.classList.add('checked');
-        // Add the fall-out class for the falling tile effect
-        square.classList.add('fall-out');
-        
     }
 
     //flooding feature: check and auto-click neighboring squares, 
@@ -143,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function()  {
         const currentId = square.id;
         const isLeftEdge = (square.id % width === 0);
         const isRightEdge = (square.id % width === width - 1);
+
         //set a timeout and check the adjacent squares to auto-click
         setTimeout(function(){
             //check the top square
@@ -194,7 +191,8 @@ document.addEventListener('DOMContentLoaded', function()  {
                 click(newSquare);
             }
             
-        }, 200)
+        }, 150)
+
     }
 
     function checkForWin() {
@@ -222,8 +220,8 @@ document.addEventListener('DOMContentLoaded', function()  {
                 setTimeout(() => {
                     removeCelebrationClass();
                 }, 1000);
+                // Remove the celebration class from all squares
                 function removeCelebrationClass() {
-                    // Remove the celebration class from all squares
                     squares.forEach(square => {
                     square.classList.remove('win-celebration');
                 })};
@@ -262,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function()  {
             }
         });
         gameOverSound.play();
-
 
         // Display a modal with a "Try Again" button
         setTimeout(() => {

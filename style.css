@@ -60,28 +60,12 @@ div {
     color: rgb(113, 38, 156);
 }
 
-@keyframes fall {
-    0% {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.fall-out {
-    animation: fall 0.5s ease-in-out;
-}
-
 .modal {
     position: fixed;
     top: 75%;
     left: 24%;
     transform: translate(-50%, -50%);
     background-color: white;
-    /* padding: 10px; */
     text-align: center;
 }
 
@@ -106,15 +90,9 @@ div {
 }
 
 @keyframes celebration {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(1);
-    }
+    0% {transform: scale(1);}
+    50% {transform: scale(1.2);}
+    100% {transform: scale(1);}
   }
   
   .win-celebration {
