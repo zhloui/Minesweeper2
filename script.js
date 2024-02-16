@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function()  {
     let squares = [];
     let isGameOver = false;
     let flags = 0;
-    let bombAmount = 6;
+    let bombAmount = 11;
 
     
     //create board
