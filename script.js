@@ -98,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function()  {
                 flagsLeft.innerHTML = bombAmount - flags;
                 removeFlagSound.play();
             };
-            
         };
     }
 
@@ -195,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function()  {
 
     }
 
+    //check for win
     function checkForWin() {
         let matches = 0;
         //check if the flags is on the bombs, if so, match plus one

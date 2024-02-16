@@ -1,3 +1,14 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+    background-image: url('./image/mines7.jpg');
+    background-size: 110% 160%;
+    background-position: left;
+    background-repeat: no-repeat;
+}
+
 .container {
     width: 500px;
 }
@@ -94,7 +105,6 @@ div {
     50% {transform: scale(1.2);}
     100% {transform: scale(1);}
   }
-  
   .win-celebration {
     animation: celebration 1s ease-in-out;
   }
@@ -111,7 +121,6 @@ div {
     display: none; 
     border-radius: 5%;
 }
-
 @keyframes shake {
     0% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
